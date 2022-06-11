@@ -20,7 +20,13 @@ match = []
 while not len(match) == 1:
     guess_coded = input("Guess:coded(gyb)").partition(':')
     guess = guess_coded[0].lower()
+    if len(guess) != 5:
+        print(f'Wrong number of letters in guess, found {len(guess)}')
+        continue
     coded = guess_coded[2].lower()
+    if any(char not in 'gyb' for char in coded):
+        print(f'Invalid char in {coded}, only g,y or b')
+        continue
     for i, letter in enumerate(guess):   
         if coded[i] == 'b':
             for j in range(NUM_LETTERS):
