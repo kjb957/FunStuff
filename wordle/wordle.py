@@ -2,6 +2,8 @@ import re
 import string
 import copy
 
+NUM_LETTERS = 5
+
 def regex_builder(possible_letters):
     """Builds"""
     regex_str = ''
@@ -12,8 +14,7 @@ def regex_builder(possible_letters):
 with open('wordle/wordle.txt', 'r') as fh:
     words = fh.read()
 
-correct_word = False
-valid_letter_position = [string.ascii_lowercase] * 5
+valid_letter_position = [string.ascii_lowercase] * NUM_LETTERS
 must_have_letters = []
 match = []
 while not len(match) == 1:
@@ -22,7 +23,7 @@ while not len(match) == 1:
     coded = guess_coded[2].lower()
     for i, letter in enumerate(guess):   
         if coded[i] == 'b':
-            for j in range(4):
+            for j in range(NUM_LETTERS):
                 valid_letter_position[j] = valid_letter_position[j].replace(letter, '')
         elif coded[i] == 'y':
             if letter not in must_have_letters:
