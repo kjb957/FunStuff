@@ -20,7 +20,7 @@ match = []
 while not len(match) == 1:
     guess_coded = input("Guess:coded(gyb)").partition(':')
     guess = guess_coded[0].lower()
-    if len(guess) != 5:
+    if len(guess) != NUM_LETTERS:
         print(f'Wrong number of letters in guess, found {len(guess)}')
         continue
     coded = guess_coded[2].lower()
