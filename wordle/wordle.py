@@ -1,5 +1,6 @@
 """
 Filter valid Wordle words based on user input for coded guesses
+Makes use of regex
 """
 
 from collections import defaultdict
@@ -9,7 +10,7 @@ from tokenize import String
 
 NUM_LETTERS = 5
 
-def regex_builder(possible_letters, must_have_letters) -> String:
+def regex_builder(possible_letters: list, must_have_letters: defaultdict(int)) -> String:
     """
     Builds a regex string that has lookahead for must have letters that do not have
     a determined position, then specifies the possible letters for each position
@@ -23,7 +24,7 @@ def regex_builder(possible_letters, must_have_letters) -> String:
         regex_str = regex_str + f'[{letters}]'
     return regex_str
 
-def multi_char_wrong_position(letter, guess, coded) -> int:
+def multi_char_wrong_position(letter: str, guess: str, coded: str) -> int:
     """
     Determines if guess has multiple chars correct but in wrong position
     """
