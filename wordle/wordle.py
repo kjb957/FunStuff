@@ -19,7 +19,8 @@ def regex_builder(possible_letters: list, must_have_letters: defaultdict(int)) -
     """
     regex_str = ''
     for letter in must_have_letters:
-        regex_str = regex_str + f'(?=.*[{letter}]{{{must_have_letters[letter]}}})'
+        num_of_letters = f'.*[{letter}]' * must_have_letters[letter]
+        regex_str = regex_str + f'(?={num_of_letters})'
     for letters in possible_letters:
         regex_str = regex_str + f'[{letters}]'
     return regex_str
@@ -66,6 +67,7 @@ while not len(match) == 1:
             pass
 
     regex = regex_builder(valid_letter_position, must_have_letters)
+    print(regex)
     match = re.findall(regex, words)
     print(len(match))
     print(match)
