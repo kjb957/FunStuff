@@ -14,8 +14,8 @@ def regex_builder(possible_letters: list, must_have_letters: defaultdict(int)) -
     """
     Builds a regex string that has lookahead for must have letters that do not have
     a determined position, then specifies the possible letters for each position
-    e.g. (?=.*[g]{1})(?=.*[h]{1})([c])([oa])([a-z])([a-z])([a-z])
-    must have g & h in the word, with the following letters as specified by the char ranges
+    e.g. (?=.*[g]{1})(?=.*[h].*[h])([c])([oa])([a-z])([a-z])([a-z])
+    must have g & 2h in the word, with the following letters as specified by the char ranges
     """
     regex_str = ''
     for letter in must_have_letters:
@@ -67,7 +67,6 @@ while not len(match) == 1:
             pass
 
     regex = regex_builder(valid_letter_position, must_have_letters)
-    print(regex)
     match = re.findall(regex, words)
     print(len(match))
     print(match)
