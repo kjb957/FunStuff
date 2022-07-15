@@ -57,9 +57,10 @@ while not len(match) == 1:
     for i, letter in enumerate(guess):
         if coded[i] == 'b':
             for j in range(NUM_LETTERS):
-                valid_letter_position[j] = valid_letter_position[j].replace(letter, '')
+                if valid_letter_position[j] != letter:
+                    valid_letter_position[j] = valid_letter_position[j].replace(letter, '')
         elif coded[i] == 'y':
-            must_have_letters[letter] = multi_char_wrong_position(letter, guess, coded)
+            must_have_letters[letter] = multi_char_wrong_position(letter, guess, coded)        
             valid_letter_position[i] = valid_letter_position[i].replace(letter, '')
         elif coded[i] == 'g':
             valid_letter_position[i] = letter
