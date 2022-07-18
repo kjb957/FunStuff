@@ -4,6 +4,7 @@ Makes use of regex
 """
 
 from collections import defaultdict
+from itertools import groupby
 import re
 import string
 from tokenize import String
@@ -72,6 +73,40 @@ def get_wordle_list(filename: string) -> string:
         return fh.read()
 
 
+def order_words(words: set) -> list:
+    """Order words based on char frequency amongst remaining words"""
+    word_score = defaultdict(int)
+    letter_score = defaultdict(int)
+    # frequency of letter in word set
+    words_string = "".join(words)
+    for char in string.ascii_lowercase:
+        letter_score[char] = len(re.findall(char, words_string))
+    for word in words:
+        word_score[word] = 0
+        for char in word:
+            word_score[word] = word_score[word] + letter_score[char]
+    return sorted(word_score.items(), key=lambda kv: kv[1], reverse=True)
+
+
+def suggest_word(words: list) -> string:
+    """Suggest a word based on frequency of characters"""
+    od = order_words(words)
+    try:
+        while letter_repeated(suggestion := od.pop(0)[0]):
+            print(f"Repeated Letters {suggestion}")
+    except IndexError:
+        print(f"End of list with {suggestion}")
+    return suggestion
+
+
+def letter_repeated(word: string) -> bool:
+    """Check if word has multiple letters"""
+    for letter, letter_seq in groupby(sorted(word)):
+        if len(list(letter_seq)) > 1:
+            return True
+    return False
+
+
 def main() -> None:
     """main"""
 
@@ -89,7 +124,9 @@ def main() -> None:
                             letter, ""
                         )
             elif coded[i] == "y":
-                must_have_letters[letter] = multi_char_wrong_position(letter, guess, coded)
+                must_have_letters[letter] = multi_char_wrong_position(
+                    letter, guess, coded
+                )
                 valid_letter_position[i] = valid_letter_position[i].replace(letter, "")
             elif coded[i] == "g":
                 valid_letter_position[i] = letter
@@ -99,7 +136,8 @@ def main() -> None:
         match = re.findall(regex, words)
         print(len(match))
         print(match)
+        print(suggest_word(match))
+
 
 if __name__ == "__main__":
     main()
-
