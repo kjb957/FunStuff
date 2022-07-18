@@ -112,8 +112,8 @@ def main() -> None:
 
     words = get_wordle_list(RELATIVE_WORDLE_FILE_PATH)
     valid_letter_position = [string.ascii_lowercase] * NUM_LETTERS
-    match = []
-    while not len(match) == 1:
+    matched_words = []
+    while not len(matched_words) == 1:
         must_have_letters = defaultdict(int)
         guess, coded = get_guess()
         for i, letter in enumerate(guess):
@@ -133,10 +133,10 @@ def main() -> None:
             else:
                 pass
         regex = regex_builder(valid_letter_position, must_have_letters)
-        match = re.findall(regex, words)
-        print(len(match))
-        print(match)
-        print(suggest_word(match))
+        matched_words = re.findall(regex, words)
+        print(len(matched_words))
+        print(matched_words)
+        print(suggest_word(matched_words))
 
 
 if __name__ == "__main__":
