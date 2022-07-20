@@ -83,20 +83,23 @@ def order_words(words: set) -> list:
         letter_score[char] = len(re.findall(char, words_string))
     for word in words:
         word_score[word] = 0
-        for char in word:
+        for char in set(word):
             word_score[word] = word_score[word] + letter_score[char]
     return sorted(word_score.items(), key=lambda kv: kv[1], reverse=True)
 
 
-def suggest_word(words: list) -> string:
+def suggest_word(words: list, bias_non_repeats: bool=False) -> string:
     """Suggest a word based on frequency of characters"""
     od = order_words(words)
-    try:
-        while letter_repeated(suggestion := od.pop(0)[0]):
-            print(f"Repeated Letters {suggestion}")
-    except IndexError:
-        print(f"End of list with {suggestion}")
-    return suggestion
+    print(od)
+    if bias_non_repeats:
+        try:
+            while letter_repeated(suggestion := od.pop(0)[0]):
+                print(f"Skipping Repeated Letters {suggestion}")
+        except IndexError:
+            print(f"End of list with {suggestion}")
+        return suggestion
+    return od.pop(0)[0]
 
 
 def letter_repeated(word: string) -> bool:
@@ -135,7 +138,7 @@ def main() -> None:
         regex = regex_builder(valid_letter_position, must_have_letters)
         matched_words = re.findall(regex, words)
         print(len(matched_words))
-        print(matched_words)
+        # print(matched_words)
         print(suggest_word(matched_words))
 
 
