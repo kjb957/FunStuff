@@ -13,6 +13,25 @@ NUM_LETTERS = 5
 RELATIVE_WORDLE_FILE_PATH = "wordle/wordle.txt"
 
 
+def score_word(word_guess: string, word_to_guess: string) -> string:
+    """Return a score of the current guess"""
+    coded_score = list("bbbbb")
+    green_taken = list(word_to_guess)
+    yellow_taken = list(word_to_guess)
+
+    for i, letter in enumerate(word_guess):
+        if letter == word_to_guess[i]:
+            coded_score[i] = "g"
+            green_taken[i] = "_"
+    for i, letter in enumerate(word_guess):
+        if coded_score[i] == "g":
+            continue
+        if letter in green_taken and letter in yellow_taken:
+            coded_score[i] = "y"
+            yellow_taken[yellow_taken.index(letter)] = "_"
+    return "".join(coded_score)
+
+
 def regex_builder(
     possible_letters: list, must_have_letters: defaultdict(int)
 ) -> String:
@@ -91,7 +110,6 @@ def order_words(words: set) -> list:
 def suggest_word(words: list, bias_non_repeats: bool = False) -> string:
     """Suggest a word based on frequency of characters"""
     od = order_words(words)
-    print(od)
     if bias_non_repeats:
         try:
             while letter_repeated(suggestion := od.pop(0)[0]):
@@ -120,7 +138,7 @@ def process_guess(
     for i, letter in enumerate(guess):
         if coded[i] == "b":
             for j in range(NUM_LETTERS):
-                if valid_letter_position[j] != letter:
+                if valid_letter_position[j] != letter and letter not in must_have_letters:
                     valid_letter_position[j] = valid_letter_position[j].replace(
                         letter, ""
                     )
