@@ -151,7 +151,7 @@ def process_guess(
         elif coded[i] == "g":
             valid_letter_position[i] = letter
         else:
-            pass
+            raise ValueError(f"Letter code must be one of gby {coded[i]}")
 
 
 def main() -> None:
@@ -167,7 +167,6 @@ def main() -> None:
         regex = regex_builder(valid_letter_position, must_have_letters)
         matched_words = re.findall(regex, words)
         print(len(matched_words))
-        # print(matched_words)
         print(suggest_word(matched_words))
 
 

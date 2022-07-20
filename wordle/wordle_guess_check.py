@@ -13,43 +13,37 @@ from wordle import (
 
 WORDLE_WORD_STR = get_wordle_list(RELATIVE_WORDLE_FILE_PATH)
 WORDLE_WORDS = WORDLE_WORD_STR.split()
-STARTING_WORD = "crane"
+STARTING_WORD = "rouse"
 
 
-def guess_word(word_to_guess: string) -> None:
+def guess_word(word_to_guess: string, initial_guess: string = None) -> None:
     """Guess the current word"""
 
     valid_letter_position = [string.ascii_lowercase] * NUM_LETTERS
     matched_words = WORDLE_WORDS
     guess_count = 1
-    guess = "crane"
+    guess = initial_guess if initial_guess else suggest_word(matched_words)
     while not len(matched_words) == 1:
         guess_count += 1
         must_have_letters = defaultdict(int)
-        if guess_count != 2:
-            guess = suggest_word(matched_words)
         coded = score_word(guess, word_to_guess)
         process_guess(guess, coded, must_have_letters, valid_letter_position)
-
-        regex = regex_builder(valid_letter_position, must_have_letters)
-        matched_words = re.findall(regex, WORDLE_WORD_STR)
-        # print(len(matched_words))
-        # print(matched_words)
-        # print(suggest_word(matched_words))
+        matched_words = re.findall(
+            regex_builder(valid_letter_position, must_have_letters), WORDLE_WORD_STR
+        )
+        guess = suggest_word(matched_words)
     return guess_count
 
 
 def main() -> None:
     """Main"""
-    print(suggest_word(WORDLE_WORDS))
+    print(STARTING_WORD)
     wordle_guess_count = defaultdict(int)
     count_stats = defaultdict(int)
     for word_to_guess in WORDLE_WORDS:
-        guess_count = guess_word(word_to_guess)
+        guess_count = guess_word(word_to_guess, STARTING_WORD)
         wordle_guess_count[word_to_guess] = guess_count
         count_stats[guess_count] += 1
-        if guess_count == 1:
-            print(guess_count, word_to_guess)
     print(count_stats)
 
 
