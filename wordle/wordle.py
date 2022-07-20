@@ -84,7 +84,7 @@ def order_words(words: set) -> list:
     for word in words:
         word_score[word] = 0
         for char in set(word):
-            word_score[word] = word_score[word] + letter_score[char]
+            word_score[word] += letter_score[char]
     return sorted(word_score.items(), key=lambda kv: kv[1], reverse=True)
 
 
@@ -110,6 +110,29 @@ def letter_repeated(word: string) -> bool:
     return False
 
 
+def process_guess(guess: string,
+                  coded: string, 
+                  must_have_letters: defaultdict(int),
+                  valid_letter_position: list) -> None:
+    """Update the two Mutable Vars passed by reference"""
+    for i, letter in enumerate(guess):
+        if coded[i] == "b":
+            for j in range(NUM_LETTERS):
+                if valid_letter_position[j] != letter:
+                    valid_letter_position[j] = valid_letter_position[j].replace(
+                        letter, ""
+                    )
+        elif coded[i] == "y":
+            must_have_letters[letter] = multi_char_wrong_position(
+                letter, guess, coded
+            )
+            valid_letter_position[i] = valid_letter_position[i].replace(letter, "")
+        elif coded[i] == "g":
+            valid_letter_position[i] = letter
+        else:
+            pass 
+
+
 def main() -> None:
     """main"""
 
@@ -119,22 +142,7 @@ def main() -> None:
     while not len(matched_words) == 1:
         must_have_letters = defaultdict(int)
         guess, coded = get_guess()
-        for i, letter in enumerate(guess):
-            if coded[i] == "b":
-                for j in range(NUM_LETTERS):
-                    if valid_letter_position[j] != letter:
-                        valid_letter_position[j] = valid_letter_position[j].replace(
-                            letter, ""
-                        )
-            elif coded[i] == "y":
-                must_have_letters[letter] = multi_char_wrong_position(
-                    letter, guess, coded
-                )
-                valid_letter_position[i] = valid_letter_position[i].replace(letter, "")
-            elif coded[i] == "g":
-                valid_letter_position[i] = letter
-            else:
-                pass
+        process_guess(guess, coded, must_have_letters, valid_letter_position)
         regex = regex_builder(valid_letter_position, must_have_letters)
         matched_words = re.findall(regex, words)
         print(len(matched_words))
