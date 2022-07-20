@@ -138,7 +138,10 @@ def process_guess(
     for i, letter in enumerate(guess):
         if coded[i] == "b":
             for j in range(NUM_LETTERS):
-                if valid_letter_position[j] != letter and letter not in must_have_letters:
+                if (
+                    valid_letter_position[j] != letter
+                    and letter not in must_have_letters
+                ):
                     valid_letter_position[j] = valid_letter_position[j].replace(
                         letter, ""
                     )

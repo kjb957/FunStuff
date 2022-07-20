@@ -8,8 +8,8 @@ from wordle import (
     process_guess,
     regex_builder,
     suggest_word,
-    score_word
-    )
+    score_word,
+)
 
 WORDLE_WORD_STR = get_wordle_list(RELATIVE_WORDLE_FILE_PATH)
 WORDLE_WORDS = WORDLE_WORD_STR.split()
