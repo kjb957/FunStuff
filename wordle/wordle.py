@@ -88,7 +88,7 @@ def order_words(words: set) -> list:
     return sorted(word_score.items(), key=lambda kv: kv[1], reverse=True)
 
 
-def suggest_word(words: list, bias_non_repeats: bool=False) -> string:
+def suggest_word(words: list, bias_non_repeats: bool = False) -> string:
     """Suggest a word based on frequency of characters"""
     od = order_words(words)
     print(od)
@@ -110,10 +110,12 @@ def letter_repeated(word: string) -> bool:
     return False
 
 
-def process_guess(guess: string,
-                  coded: string, 
-                  must_have_letters: defaultdict(int),
-                  valid_letter_position: list) -> None:
+def process_guess(
+    guess: string,
+    coded: string,
+    must_have_letters: defaultdict(int),
+    valid_letter_position: list,
+) -> None:
     """Update the two Mutable Vars passed by reference"""
     for i, letter in enumerate(guess):
         if coded[i] == "b":
@@ -123,14 +125,12 @@ def process_guess(guess: string,
                         letter, ""
                     )
         elif coded[i] == "y":
-            must_have_letters[letter] = multi_char_wrong_position(
-                letter, guess, coded
-            )
+            must_have_letters[letter] = multi_char_wrong_position(letter, guess, coded)
             valid_letter_position[i] = valid_letter_position[i].replace(letter, "")
         elif coded[i] == "g":
             valid_letter_position[i] = letter
         else:
-            pass 
+            pass
 
 
 def main() -> None:
