@@ -1,5 +1,6 @@
 from collections import defaultdict
-from wordle import score_word, process_guess
+
+from wordle import process_guess, score_word
 
 
 def test_score_word_all_match():

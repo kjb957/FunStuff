@@ -1,14 +1,18 @@
-import string
+"""
+Gather Stats on Wordle guess attempts
+"""
 import re
+import string
 from collections import defaultdict
+
 from wordle import (
-    RELATIVE_WORDLE_FILE_PATH,
     NUM_LETTERS,
+    RELATIVE_WORDLE_FILE_PATH,
     get_wordle_list,
     process_guess,
     regex_builder,
-    suggest_word,
     score_word,
+    suggest_word,
 )
 
 WORDLE_WORD_STR = get_wordle_list(RELATIVE_WORDLE_FILE_PATH)

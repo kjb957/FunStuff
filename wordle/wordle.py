@@ -3,10 +3,10 @@ Filter valid Wordle words based on user input for coded guesses
 Makes use of regex
 """
 
-from collections import defaultdict
-from itertools import groupby
 import re
 import string
+from collections import defaultdict
+from itertools import groupby
 from tokenize import String
 
 NUM_LETTERS = 5
