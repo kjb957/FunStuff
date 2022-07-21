@@ -1,12 +1,12 @@
 """
 Testing regex_builder function
 """
-from collections import defaultdict
 import re
+from collections import defaultdict
 
 from pytest import fixture
 
-from wordle import regex_builder, get_wordle_list, RELATIVE_WORDLE_FILE_PATH
+from wordle import RELATIVE_WORDLE_FILE_PATH, get_wordle_list, regex_builder
 
 
 @fixture(name="load_wordle_words")
