@@ -54,13 +54,13 @@ def multi_char_wrong_position(letter: str, guess: str, coded: str) -> int:
     """
     Determines if guess has multiple chars correct but in wrong position
     """
-    id = 0
+    letter_id = 0
     count = 0
     for _ in range(guess.count(letter)):
-        id = guess.index(letter, id)
-        if coded[id] == "y":
+        letter_id = guess.index(letter, letter_id)
+        if coded[letter_id] == "y":
             count += 1
-        id += 1
+        letter_id += 1
     return count
 
 
@@ -88,8 +88,8 @@ def get_guess() -> tuple:
 
 def get_wordle_list(filename: string) -> string:
     """return wordle file data"""
-    with open(filename, "r") as fh:
-        return fh.read()
+    with open(filename, "r", encoding="utf-8") as file_handler:
+        return file_handler.read()
 
 
 def order_words(words: set) -> list:
@@ -109,20 +109,20 @@ def order_words(words: set) -> list:
 
 def suggest_word(words: list, bias_non_repeats: bool = False) -> string:
     """Suggest a word based on frequency of characters"""
-    od = order_words(words)
+    words_list = order_words(words)
     if bias_non_repeats:
         try:
-            while letter_repeated(suggestion := od.pop(0)[0]):
+            while letter_repeated(suggestion := words_list.pop(0)[0]):
                 print(f"Skipping Repeated Letters {suggestion}")
         except IndexError:
             print(f"End of list with {suggestion}")
         return suggestion
-    return od.pop(0)[0]
+    return words_list.pop(0)[0]
 
 
 def letter_repeated(word: string) -> bool:
     """Check if word has multiple letters"""
-    for letter, letter_seq in groupby(sorted(word)):
+    for _, letter_seq in groupby(sorted(word)):
         if len(list(letter_seq)) > 1:
             return True
     return False
@@ -161,7 +161,7 @@ def main() -> None:
     words = get_wordle_list(RELATIVE_WORDLE_FILE_PATH)
     valid_letter_position = [string.ascii_lowercase] * NUM_LETTERS
     matched_words = []
-    while not len(matched_words) == 1:
+    while len(matched_words) != 1:
         must_have_letters = defaultdict(int)
         guess, coded = get_guess()
         process_guess(guess, coded, must_have_letters, valid_letter_position)
