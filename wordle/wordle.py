@@ -137,6 +137,7 @@ def process_guess(
     """Update the two Mutable Vars passed by reference"""
     for i, letter in enumerate(guess):
         if coded[i] == "b":
+            valid_letter_position[i] = valid_letter_position[i].replace(letter, "")
             for j in range(NUM_LETTERS):
                 if (
                     valid_letter_position[j] != letter
