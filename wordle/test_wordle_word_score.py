@@ -1,9 +1,8 @@
 """
 Testing score_word function
 """
-from collections import defaultdict
 
-from wordle import process_guess, score_word
+from wordle import score_word
 
 
 def test_score_word_all_match():
@@ -81,28 +80,3 @@ def test_score_word_check_igloo_knoll():
     Testing score_word
     """
     assert score_word("igloo", "knoll") == "bbyyb"
-
-
-def test_process_guess():
-    """
-    Testing score_word
-    """
-    guess = "igloo"
-    coded = "bbyyb"
-    valid_letter_position = [
-        "bcdfghijkmnopqvwxz",
-        "bcdfghijkmnpqvwxz",
-        "bcdfghijklmnopqvwxz",
-        "bcdfghijklmnopqvwxz",
-        "bcdfghijklmnopqvwxz",
-    ]
-    valid_letter_position_processed = [
-        "bcdfhjkmnopqvwxz",
-        "bcdfhjkmnpqvwxz",
-        "bcdfhjkmnopqvwxz",
-        "bcdfhjklmnpqvwxz",
-        "bcdfhjklmnpqvwxz",
-    ]
-
-    process_guess(guess, coded, defaultdict(int), valid_letter_position)
-    assert valid_letter_position == valid_letter_position_processed
