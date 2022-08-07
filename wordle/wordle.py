@@ -161,8 +161,8 @@ def main() -> None:
     words = get_wordle_list(RELATIVE_WORDLE_FILE_PATH)
     valid_letter_position = [string.ascii_lowercase] * NUM_LETTERS
     matched_words = []
+    must_have_letters = defaultdict(int)
     while len(matched_words) != 1:
-        must_have_letters = defaultdict(int)
         guess, coded = get_guess()
         process_guess(guess, coded, must_have_letters, valid_letter_position)
         regex = regex_builder(valid_letter_position, must_have_letters)
